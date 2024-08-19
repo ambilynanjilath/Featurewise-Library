@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn.preprocessing import (StandardScaler, MinMaxScaler, RobustScaler,
-                                  MaxAbsScaler, Normalizer, QuantileTransformer,
-                                  PowerTransformer)
+                                   MaxAbsScaler, Normalizer, QuantileTransformer,
+                                   PowerTransformer)
 import logging
 
 # Configure logging
@@ -49,6 +49,10 @@ class DataNormalize:
 
         Raises:
         ValueError: If the input is not a pandas DataFrame.
+
+        Steps:
+        1. Verify if the input `df` is an instance of `pd.DataFrame`.
+        2. Log an error message and raise a `ValueError` if the input is not a DataFrame.
         """
         if not isinstance(df, pd.DataFrame):
             self.logger.error("Input must be a pandas DataFrame.")
@@ -64,6 +68,11 @@ class DataNormalize:
 
         Raises:
         ValueError: If any of the specified columns are not present in the DataFrame.
+
+        Steps:
+        1. Iterate through the specified `columns` and check if they exist in `df`.
+        2. Identify any missing columns and log an error message.
+        3. Raise a `ValueError` with the list of missing columns if any are not found.
         """
         missing_cols = [col for col in columns if col not in df.columns]
         if missing_cols:
@@ -83,6 +92,16 @@ class DataNormalize:
 
         Raises:
         ValueError: If the input is not a pandas DataFrame or if an invalid scaling method is provided.
+
+        Steps:
+        1. Check if the input `df` is a valid pandas DataFrame using `_check_dataframe`.
+        2. Validate the specified `method` and raise a `ValueError` if it's not in the `scalers` dictionary.
+        3. Log the scaling process using the chosen method.
+        4. Select only numeric columns from `df` for scaling.
+        5. Fit and transform the numeric columns using the chosen scaler.
+        6. Create a new DataFrame with scaled numeric columns, preserving original DataFrame indices.
+        7. Concatenate the scaled numeric columns with non-numeric columns from the original DataFrame.
+        8. Log the completion of the scaling process and return the result DataFrame.
         """
         self._check_dataframe(df)
         if method not in self.scalers:
@@ -112,6 +131,16 @@ class DataNormalize:
 
         Raises:
         ValueError: If the input is not a pandas DataFrame, if any of the specified columns are not present in the DataFrame, or if an invalid scaling method is provided.
+
+        Steps:
+        1. Verify if the input `df` is a valid pandas DataFrame using `_check_dataframe`.
+        2. Ensure all specified `columns` exist in the DataFrame using `_check_columns`.
+        3. Validate the `method` and raise a `ValueError` if it's not in the `scalers` dictionary.
+        4. Log the scaling process for the specified columns using the chosen method.
+        5. Create a copy of the DataFrame to avoid modifying the original data.
+        6. Fit and transform the specified columns using the chosen scaler.
+        7. Update the scaled columns in the copied DataFrame.
+        8. Log the completion of the column scaling process and return the modified DataFrame.
         """
         self._check_dataframe(df)
         self._check_columns(df, columns)

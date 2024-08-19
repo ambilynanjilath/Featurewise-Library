@@ -15,6 +15,11 @@ class MissingValueImputation:
         Parameters:
         strategies (dict): A dictionary where keys are column names and values are 
                            the imputation strategies ('mean', 'median', 'mode', or a custom number or value).
+        
+        Steps:
+        1. Set the strategies attribute to the provided dictionary or an empty dictionary if none is provided.
+        2. Initialize an empty dictionary for storing computed fill values.
+        3. Create a logger for the class.
         """
         self.strategies = strategies or {}  # If no strategies are provided, initialize an empty dictionary
         self.fill_values = {}  # Initialize an empty dictionary to store fill values
@@ -34,6 +39,13 @@ class MissingValueImputation:
         
         Raises:
         ValueError: If the strategy is not applicable or unsupported.
+        
+        Steps:
+        1. Check if the strategy is a numeric value (int or float) and return it directly.
+        2. If the strategy is 'mean', calculate and return the mean value if the column is numeric.
+        3. If the strategy is 'median', calculate and return the median value if the column is numeric.
+        4. If the strategy is 'mode', return the mode of the column.
+        5. Raise an error if the strategy is unsupported or not applicable to the column type.
         """
         self.logger.debug(f"Computing fill value for column '{column}' with strategy '{strategy}'")
         if isinstance(strategy, (int, float)):
@@ -68,6 +80,13 @@ class MissingValueImputation:
         
         Raises:
         ValueError: If a strategy is not applicable for a column.
+        
+        Steps:
+        1. Log the fitting process.
+        2. Iterate through the columns specified in the strategies.
+        3. Check if each column exists in the DataFrame.
+        4. Compute the fill value for each column using the specified strategy.
+        5. Store the computed fill values in the fill_values attribute.
         """
         self.logger.info("Fitting MissingValueImputation with the provided DataFrame.")
         for column, strategy in self.strategies.items():
@@ -89,6 +108,13 @@ class MissingValueImputation:
         
         Raises:
         ValueError: If a column in the strategies is not present in the DataFrame.
+        
+        Steps:
+        1. Log the transformation process.
+        2. Iterate through the columns in the fill_values attribute.
+        3. Check if each column exists in the DataFrame.
+        4. Fill missing values in each column using the corresponding fill value.
+        5. Log the fill values used for each column.
         """
         self.logger.info("Transforming DataFrame using the computed fill values.")
         for column, fill_value in self.fill_values.items():
@@ -111,6 +137,11 @@ class MissingValueImputation:
         
         Raises:
         ValueError: If a strategy is not applicable for a column.
+        
+        Steps:
+        1. Log the fit and transform process.
+        2. Call the fit method to compute the fill values.
+        3. Call the transform method to apply the computed fill values to the DataFrame.
         """
         self.logger.info("Fitting and transforming DataFrame in one step.")
         self.fit(df)  # Compute the fill values
