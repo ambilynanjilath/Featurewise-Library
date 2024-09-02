@@ -4,12 +4,30 @@ from featurewise.imputation import MissingValueImputation
 from featurewise.encoding import FeatureEncoding
 from featurewise.scaling import DataNormalize
 from featurewise.date_time_features import DateTimeExtractor
-from featurewise.feature_creation import PolynomialFeaturesTransformer
+from featurewise.create_features import PolynomialFeaturesTransformer
 from st_aggrid import AgGrid, GridOptionsBuilder, GridUpdateMode
 
 def display_dataframe(df):
     """
     Displays a DataFrame in an interactive grid using AgGrid.
+
+    This function uses AgGrid to present the DataFrame in a user-friendly grid format.
+    It allows users to interact with the data, including sorting and pagination.
+    The function returns the updated DataFrame after any interactions in the grid.
+
+    AgGrid
+    ----------
+    AgGrid is an advanced data grid library for displaying and interacting with data in web applications. 
+    It provides features like sorting, filtering, pagination, and editing in a highly customizable and 
+    performant grid. It is often used in applications where users need to interact with large datasets in 
+    a user-friendly manner.
+
+    Streamlit
+    -----------
+    Streamlit is an open-source framework for creating interactive web applications with Python. 
+    It simplifies the process of building data-driven web apps, allowing developers to create interactive 
+    interfaces and visualizations with minimal code. Streamlit is particularly popular for creating dashboards
+    and tools for data exploration, machine learning model deployment, and data analysis.
 
     Args:
         df (pd.DataFrame): The DataFrame to be displayed.
@@ -18,8 +36,8 @@ def display_dataframe(df):
         pd.DataFrame: The updated DataFrame after interactions in the grid.
     """
     gb = GridOptionsBuilder.from_dataframe(df)
-    gb.configure_pagination(paginationAutoPageSize=False, paginationPageSize=10)  # Pagination
-    gb.configure_side_bar()  # Enable column selection
+    gb.configure_pagination(paginationAutoPageSize=False, paginationPageSize=10)  # Pagination settings
+    gb.configure_side_bar()  # Enable sidebar for column selection
     grid_options = gb.build()
 
     response = AgGrid(
@@ -34,13 +52,16 @@ def display_dataframe(df):
 
 def main():
     """
-    The main function to run the Streamlit app.
+    The main function to run the Streamlit app for data transformation.
 
-    This function:
-    - Displays a logo and a file uploader.
-    - Handles file uploads and displays the DataFrame.
-    - Provides options for data transformations (e.g., column deletion, imputation, encoding, scaling, datetime feature extraction, and polynomial feature creation).
-    - Allows users to download the transformed DataFrame as a CSV file.
+    This function provides a user interface for uploading a CSV file, applying various data transformations,
+    and downloading the transformed data. It includes:
+    - Displaying a logo and file uploader.
+    - Handling file uploads and displaying the DataFrame.
+    - Providing options for column deletion, imputation, encoding, scaling, datetime feature extraction, and polynomial feature creation.
+    - Allowing users to download the transformed DataFrame as a CSV file.
+
+    It also includes error handling for file reading and transformation steps.
     """
     st.markdown("""
         <style>
@@ -52,12 +73,13 @@ def main():
         </style>
     """, unsafe_allow_html=True)
 
-    st.image('/home/user/Documents/Datahut_Internship/project/featurewise_logo.png', width=200, use_column_width=False)  # Adjust the path and width as needed
+    st.image('/home/user/Documents/Datahut_Internship/project/package_logo.jpeg', width=200, use_column_width=False)  # Display logo
 
     uploaded_file = st.file_uploader("", type="csv")
     
     if uploaded_file is not None:
         try:
+            # Read CSV file into DataFrame
             if 'df' not in st.session_state:
                 st.session_state.df = pd.read_csv(uploaded_file)
 
@@ -183,50 +205,41 @@ def main():
                     if "All" in extract_options:
                         st.session_state.df = datetime_extractor.extract_all()
                     else:
-                        if "Year" in extract_options:
-                            st.session_state.df = datetime_extractor.extract_year()
-                        if "Month" in extract_options:
-                            st.session_state.df = datetime_extractor.extract_month()
-                        if "Day" in extract_options:
-                            st.session_state.df = datetime_extractor.extract_day()
-                        if "Day of Week" in extract_options:
-                            st.session_state.df = datetime_extractor.extract_day_of_week()
-                    st.write("### DataFrame After Datetime Features Extraction")
+                        st.session_state.df = datetime_extractor.extract_features(extract_options)
+                    st.write("### DataFrame After Datetime Feature Extraction")
                     st.session_state.df = display_dataframe(st.session_state.df)
             except KeyError as e:
                 st.error(f"Column not found: {e}")
             except Exception as e:
-                st.error(f"An error occurred during datetime transformation: {e}")
+                st.error(f"An error occurred during datetime feature extraction: {e}")
 
-        # Feature Creation
+        # Polynomial Features
         if "Feature Creation" in transformations:
-            st.sidebar.header("Feature Creation Settings")
+            st.sidebar.header("Polynomial Features Settings")
             try:
-                poly_degree = st.sidebar.number_input("Degree of polynomial features", min_value=1, value=2)
-                poly_columns = st.sidebar.multiselect("Select columns for polynomial features", st.session_state.df.columns)
-                if st.sidebar.button("Apply Polynomial Features"):
+                poly_columns = st.sidebar.multiselect("Select columns for polynomial feature creation", st.session_state.df.columns)
+                degree = st.sidebar.slider("Select the degree of polynomial features", 2, 5, 2)
+                if st.sidebar.button("Apply Feature Creation"):
                     if poly_columns:
-                        poly_transformer = PolynomialFeaturesTransformer(degree=poly_degree)
-                        df_poly = poly_transformer.fit_transform(st.session_state.df[poly_columns], degree=poly_degree)
-                        st.session_state.df = pd.concat([st.session_state.df.drop(columns=poly_columns), df_poly], axis=1)
-                        st.write("### DataFrame After Polynomial Features")
+                        poly_transformer = PolynomialFeaturesTransformer(degree=degree)
+                        df_poly = poly_transformer.fit_transform(st.session_state.df[poly_columns])
+                        st.session_state.df = pd.concat([st.session_state.df, df_poly], axis=1)
+                        st.write("### DataFrame After Polynomial Feature Creation")
                         st.session_state.df = display_dataframe(st.session_state.df)
                     else:
-                        st.error("Please select at least one column for polynomial features.")
-            except ValueError as e:
-                st.error(f"Error during polynomial feature creation: {e}")
+                        st.warning("No columns selected for polynomial feature creation.")
+            except KeyError as e:
+                st.error(f"Column not found: {e}")
             except Exception as e:
-                st.error(f"An unexpected error occurred during feature creation: {e}")
+                st.error(f"An error occurred during feature creation: {e}")
 
-        # Download transformed DataFrame
-        try:
-            st.sidebar.markdown("### Download Transformed Data")
-            default_filename = "transformed_data.csv"
-            if st.sidebar.button("Download Transformed Data"):
-                st.session_state.df.to_csv(default_filename, index=False)
-                st.sidebar.markdown(f"[Download {default_filename}](./{default_filename})")
-        except Exception as e:
-            st.error(f"Error during file download: {e}")
+        # Download Button
+        st.sidebar.download_button(
+            "Download Transformed CSV",
+            data=st.session_state.df.to_csv(index=False),
+            file_name="transformed_data.csv",
+            mime="text/csv"
+        )
 
 if __name__ == "__main__":
     main()

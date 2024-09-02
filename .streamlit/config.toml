@@ -4,3 +4,12 @@ backgroundColor = "#FFFFFF"
 secondaryBackgroundColor = "#96DED1"  
 textColor = "#000000"  
 font = "serif"  
+
+
+[browser]
+layout = "wide" 
+initial_sidebar_state = "expanded"
+
+
+[experimental]
+dataFrameSerialization = "arrow"
