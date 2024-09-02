@@ -27,15 +27,15 @@ class MissingValueImputation:
 
     def _compute_fill_value(self, df: pd.DataFrame, column: str, strategy: Union[str, int, float]) -> Union[float, str]:
         """
-        Compute the fill value based on the strategy.
+        Compute the fill value based on the imputation strategy for a given column.
         
         Parameters:
         df (pd.DataFrame): The dataframe to compute fill values from.
-        column (str): The column name.
-        strategy (Union[str, int, float]): The imputation strategy.
+        column (str): The column name for which to compute the fill value.
+        strategy (Union[str, int, float]): The imputation strategy to use ('mean', 'median', 'mode', or a custom number or value).
         
         Returns:
-        Union[float, str]: The computed fill value.
+        Union[float, str]: The computed fill value based on the strategy.
         
         Raises:
         ValueError: If the strategy is not applicable or unsupported.
@@ -70,16 +70,16 @@ class MissingValueImputation:
 
     def fit(self, df: pd.DataFrame) -> 'MissingValueImputation':
         """
-        Compute the fill values based on the provided strategies.
+        Compute the fill values for missing data based on the provided strategies.
         
         Parameters:
         df (pd.DataFrame): The dataframe to compute fill values from.
         
         Returns:
-        self: Returns the instance itself.
+        self: The instance of MissingValueImputation with computed fill values.
         
         Raises:
-        ValueError: If a strategy is not applicable for a column.
+        ValueError: If a strategy is not applicable for a column or if a column is not present in the DataFrame.
         
         Steps:
         1. Log the fitting process.
@@ -127,7 +127,7 @@ class MissingValueImputation:
 
     def fit_transform(self, df: pd.DataFrame) -> pd.DataFrame:
         """
-        Compute the fill values and apply the imputation in one step.
+        Compute the fill values and apply the imputation to the dataframe in one step.
         
         Parameters:
         df (pd.DataFrame): The dataframe to fit and transform.
@@ -136,7 +136,7 @@ class MissingValueImputation:
         pd.DataFrame: The dataframe with missing values filled.
         
         Raises:
-        ValueError: If a strategy is not applicable for a column.
+        ValueError: If a strategy is not applicable for a column or if a column is not present in the DataFrame.
         
         Steps:
         1. Log the fit and transform process.

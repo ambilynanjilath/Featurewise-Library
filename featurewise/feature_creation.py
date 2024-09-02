@@ -7,8 +7,8 @@ logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %
 
 class PolynomialFeaturesTransformer:
     """
-    PolynomialFeaturesTransformer is a class to generate polynomial features from a DataFrame's numeric columns.
-    
+    PolynomialFeaturesTransformer generates polynomial features from a DataFrame's numeric columns.
+
     Attributes:
         degree (int): Degree of the polynomial features to create.
         poly (PolynomialFeatures): Instance of PolynomialFeatures from sklearn.
@@ -16,13 +16,13 @@ class PolynomialFeaturesTransformer:
 
     def __init__(self, degree):
         """
-        Initialize the PolynomialFeaturesTransformer.
+        Initialize the PolynomialFeaturesTransformer with a specified degree.
 
         Parameters:
-        degree (int): Degree of the polynomial features to create.
+            degree (int): Degree of the polynomial features to create.
 
         Raises:
-        ValueError: If the degree is not a positive integer.
+            ValueError: If the degree is not a positive integer.
         """
         if not isinstance(degree, int) or degree < 1:
             logging.error("Degree must be a positive integer.")
@@ -33,18 +33,17 @@ class PolynomialFeaturesTransformer:
 
     def fit_transform(self, df, degree=None):
         """
-        Fit to data, then transform it. Optionally, change the degree of polynomial features.
+        Fit to data and transform it into polynomial features. Optionally update the polynomial degree.
 
         Parameters:
-        df (pd.DataFrame): Input data to transform.
-        degree (int, optional): Degree of the polynomial features to create.
+            df (pd.DataFrame): Input DataFrame to transform.
+            degree (int, optional): New degree for polynomial features. If not provided, uses the initial degree.
 
         Returns:
-        pd.DataFrame: Transformed DataFrame with polynomial features.
+            pd.DataFrame: Transformed DataFrame with polynomial features.
 
         Raises:
-        ValueError: If degree is not a positive integer, if df is not a pandas DataFrame,
-                    or if the DataFrame contains non-numeric or categorical columns.
+            ValueError: If degree is not a positive integer, if df is not a DataFrame, or if it contains non-numeric or categorical columns.
         """
         if degree is not None:
             if not isinstance(degree, int) or degree < 1:
@@ -85,6 +84,7 @@ class PolynomialFeaturesTransformer:
 
         logging.info("Polynomial features transformation successful.")
         return pd.DataFrame(transformed_data, columns=self.poly.get_feature_names_out(df_numeric.columns))
+
 
 
 class AggregationTransformer:

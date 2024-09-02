@@ -66,7 +66,7 @@ class DateTimeExtractor:
             date_str (str): The date string to parse.
         
         Returns:
-            datetime or NaT: Parsed datetime object or NaT if parsing fails.
+            datetime or pd.NaT: Parsed datetime object or NaT if parsing fails.
         """
         for fmt in self.date_formats:
             try:
@@ -87,7 +87,7 @@ class DateTimeExtractor:
             ValueError: If there is an error extracting the year.
         """
         try:
-            self.df['year'] = self.df[self.datetime_col].dt.year  # Extract the year and create a new 'year' column
+            self.df['year'] = self.df[self.datetime_col].dt.year
             logging.info("Extracted 'year' column successfully.")
         except Exception as e:
             logging.error(f"Error extracting year: {e}")
@@ -105,7 +105,7 @@ class DateTimeExtractor:
             ValueError: If there is an error extracting the month.
         """
         try:
-            self.df['month'] = self.df[self.datetime_col].dt.month  # Extract the month and create a new 'month' column
+            self.df['month'] = self.df[self.datetime_col].dt.month
             logging.info("Extracted 'month' column successfully.")
         except Exception as e:
             logging.error(f"Error extracting month: {e}")
@@ -123,7 +123,7 @@ class DateTimeExtractor:
             ValueError: If there is an error extracting the day.
         """
         try:
-            self.df['day'] = self.df[self.datetime_col].dt.day  # Extract the day and create a new 'day' column
+            self.df['day'] = self.df[self.datetime_col].dt.day
             logging.info("Extracted 'day' column successfully.")
         except Exception as e:
             logging.error(f"Error extracting day: {e}")
@@ -141,7 +141,7 @@ class DateTimeExtractor:
             ValueError: If there is an error extracting the day of the week.
         """
         try:
-            self.df['day_of_week'] = self.df[self.datetime_col].dt.day_name()  # Extract the day of the week and create a new 'day_of_week' column
+            self.df['day_of_week'] = self.df[self.datetime_col].dt.day_name()
             logging.info("Extracted 'day_of_week' column successfully.")
         except Exception as e:
             logging.error(f"Error extracting day of week: {e}")
@@ -159,12 +159,12 @@ class DateTimeExtractor:
             ValueError: If there is an error extracting any of the datetime components.
         """
         try:
-            self.extract_year()  # Call the method to extract and add the 'year' column
-            self.extract_month()  # Call the method to extract and add the 'month' column
-            self.extract_day()  # Call the method to extract and add the 'day' column
-            self.extract_day_of_week()  # Call the method to extract and add the 'day_of_week' column
+            self.extract_year()
+            self.extract_month()
+            self.extract_day()
+            self.extract_day_of_week()
             logging.info("Extracted all datetime components successfully.")
         except Exception as e:
             logging.error(f"Error extracting all datetime components: {e}")
             raise ValueError(f"Error extracting all datetime components: {e}")
-        return self.df  # Return the DataFrame with the new columns added
+        return self.df
