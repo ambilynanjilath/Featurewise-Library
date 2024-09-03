@@ -1,0 +1,2 @@
+[console_scripts]
+run-FeatureWise = FeatureWise_app:main

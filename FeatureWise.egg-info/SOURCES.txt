@@ -1,0 +1,15 @@
+LICENSE.md
+README.md
+setup.py
+FeatureWise.egg-info/PKG-INFO
+FeatureWise.egg-info/SOURCES.txt
+FeatureWise.egg-info/dependency_links.txt
+FeatureWise.egg-info/entry_points.txt
+FeatureWise.egg-info/requires.txt
+FeatureWise.egg-info/top_level.txt
+featurewise/__init__.py
+featurewise/create_features.py
+featurewise/date_time_features.py
+featurewise/encoding.py
+featurewise/imputation.py
+featurewise/scaling.py

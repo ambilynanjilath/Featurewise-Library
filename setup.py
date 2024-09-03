@@ -1,8 +1,8 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='featurewise',  
-    version='1.0.0',  
+    name='FeatureWise',  
+    version='1.0.1',  
     description='A no-code solution for performing data transformations like imputation, encoding, scaling, and feature creation, with an intuitive interface for interactive DataFrame manipulation and easy CSV export.',  
     long_description=open('README.md').read(),  
     long_description_content_type='text/markdown', 
@@ -16,7 +16,7 @@ setup(
     include_package_data=True,
     entry_points={
         'console_scripts': [
-            'run-featurewise=featurewise_app:main',
+            'run-FeatureWise=FeatureWise_app:main',
         ],
     },
     install_requires=[
@@ -33,11 +33,6 @@ setup(
         'Development Status :: 5 - Production/Stable',  
         'Intended Audience :: Developers',  
         'License :: OSI Approved :: MIT License',  
-        'Programming Language :: Python :: 3', 
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
-        'Programming Language :: Python :: 3.9',
-        'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: 3.12',
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],

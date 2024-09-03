@@ -1,3 +1,35 @@
+Metadata-Version: 2.1
+Name: FeatureWise
+Version: 1.0.0
+Summary: A no-code solution for performing data transformations like imputation, encoding, scaling, and feature creation, with an intuitive interface for interactive DataFrame manipulation and easy CSV export.
+Home-page: https://github.com/ambilynanjilath/Featurewise-Library.git
+Author: Ambily Biju
+Author-email: ambilybiju2408@gmail.com
+Project-URL: Documentation, https://github.com/ambilynanjilath/Featurewise-Library/blob/main/README.md
+Project-URL: Source, https://github.com/ambilynanjilath/Featurewise-Library
+Project-URL: Tracker, https://github.com/ambilynanjilath/Featurewise-Library/issues
+Keywords: data transformation,imputation,encoding,scaling,feature creation,machine learning,data preprocessing,pandas,scikit-learn,feature engineering,data science,Python
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE.md
+Requires-Dist: pandas>=1.0.0
+Requires-Dist: scikit-learn>=0.22.0
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: scipy
+Requires-Dist: streamlit
+Requires-Dist: st_aggrid
+
 # FeatureWise
 
 [![PyPI version](https://badge.fury.io/py/featurewise.svg)](https://badge.fury.io/py/featurewise)
@@ -60,42 +92,44 @@ The `featurewise` package provides several modules for different data transforma
 Each of these modules is described in detail below.
 
 ### 1. `create_features.py`
-The `create_features.py` module provides functionality to generate polynomial features from numeric columns in a pandas DataFrame. The `PolynomialFeaturesTransformer` class supports creating polynomial combinations of the input features up to a specified degree, enhancing the feature set for predictive modeling.
+The `encoding.py` module provides functionality to encode categorical features in a pandas DataFrame using Label Encoding and One-Hot Encoding. The `FeatureEncoding` class in this module offers methods for converting categorical data into a numerical format suitable for machine learning algorithms.
 
-#### Key Features
-- **Degree Specification:** Allows setting the degree of polynomial features during initialization or transformation.
-- **Numeric Column Filtering:** Automatically filters and processes only the numeric columns in the DataFrame.
-- **Error Handling:** Provides robust error handling for invalid inputs, including non-numeric data and improper degree values.
+#### Key Features:
+- **Label Encoding**: Converts categorical text data into numerical data by assigning a unique integer to each category.
+- **One-Hot Encoding**: Converts categorical data into a binary matrix, creating a new column for each unique category.
 
-#### Supported Transformations
-- **Polynomial Feature Creation:** Generates polynomial combinations of input features based on the specified degree.
-
+#### Supported Encoders:
+- **LabelEncoder**: Converts each category to a unique integer.
+- **OneHotEncoder**: Converts categorical data into a binary matrix, with an option to drop the first category to avoid multicollinearity.
 
 #### Example Usage:
 ```python
-from featurewise.create_features import PolynomialFeaturesTransformer
+from encoding import FeatureEncoding
 import pandas as pd
 
 # Example DataFrame
-data = {'feature1': [1, 2, 3], 'feature2': [4, 5, 6]}
+data = {'Color': ['Red', 'Blue', 'Green'], 'Size': ['S', 'M', 'L']}
 df = pd.DataFrame(data)
 
-# Initialize the PolynomialFeaturesTransformer object
-transformer = PolynomialFeaturesTransformer(degree=2)
+# Initialize the FeatureEncoding object
+encoder = FeatureEncoding(df)
 
-# Transform the DataFrame to include polynomial features
-transformed_df = transformer.fit_transform(df)
+# Apply Label Encoding
+df_label_encoded = encoder.label_encode(['Color'])
 
-print(transformed_df)
+# Apply One-Hot Encoding
+df_one_hot_encoded = encoder.one_hot_encode(['Size'])
+
+print(df_label_encoded)
+print(df_one_hot_encoded)
 ```
 #### Methods
 
+- **`label_encode(columns: list) -> pd.DataFrame`**
+  - Apply Label Encoding to the specified columns.
 
-- **`__init__(degree)`**: Initializes the transformer with the specified degree of polynomial features.
-
-- **`fit_transform(df, degree=None)`**: Fits the transformer to the numeric columns of the DataFrame and generates polynomial features. Optionally, updates the polynomial degree.
-
-- **`_validate_input(df)`**: Validates the input DataFrame, ensuring it contains only numeric columns and no categorical data.
+- **`one_hot_encode(columns: list) -> pd.DataFrame`**
+  - Apply One-Hot Encoding to the specified columns, concatenate the encoded columns with the original DataFrame, and drop the original columns.
 
 ### 2. `date_time_features.py`
 
