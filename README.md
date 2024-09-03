@@ -19,13 +19,13 @@ FeatureWise is a Python package for feature engineering that provides a set of t
 You can install FeatureWise from PyPI using `pip`:
 
 ```bash
-pip install FeatureWise==1.0.0
+pip install FeatureWise
 ```
 ## Quick Start
 After installing the package, run the FeatureWise interface using:
 
 ```bash
-run featurewise
+run FeatureWise
 ```
 This will open a Streamlit app where you can upload your dataset and start applying transformations.
 
@@ -33,7 +33,7 @@ This will open a Streamlit app where you can upload your dataset and start apply
 ### Command-Line Interface
 To launch the Streamlit app, simply use the command:
 ```bash
-run featurewise
+run FeatureWise
 ```
 ### Importing Modules in Python
 You can also use FeatureWise modules directly in your Python scripts:
@@ -49,7 +49,7 @@ from featurewise.create_features import PolynomialFeaturesTransformer
 
 ## Modules Overview
 
-The `featurewise` package provides several modules for different data transformation tasks:
+The `Featurewise` package provides several modules for different data transformation tasks:
 
 - **create_features.py** - Generate polynomial features.
 - **date_time_features.py** - Extract and handle date-time related features.
