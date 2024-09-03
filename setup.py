@@ -2,21 +2,21 @@ from setuptools import setup, find_packages
 
 setup(
     name='FeatureWise',  
-    version='1.0.2',  
+    version='1.0.5',  
     description='A no-code solution for performing data transformations like imputation, encoding, scaling, and feature creation, with an intuitive interface for interactive DataFrame manipulation and easy CSV export.',  
     long_description=open('README.md').read(),  
     long_description_content_type='text/markdown', 
     author='Ambily Biju', 
     author_email='ambilybiju2408@gmail.com',  
     url='https://github.com/ambilynanjilath/Featurewise-Library.git',  
-    packages=find_packages(), 
+    packages=find_packages(include=['featurewise', 'featurewise.*']),
     package_data={
         '': ['featurewise/featurewise_logo.png'], 
     },
     include_package_data=True,
     entry_points={
         'console_scripts': [
-            'run-FeatureWise=FeatureWise_app:main',
+            'run-FeatureWise=featurewise_app:main',
         ],
     },
     install_requires=[
@@ -26,7 +26,7 @@ setup(
         "pandas",
         "scipy",
         "streamlit",
-        "st_aggrid",
+        "streamlit-aggrid"
     ],
     python_requires='>=3.8',  
     classifiers=[
