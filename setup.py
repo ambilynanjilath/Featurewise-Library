@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='FeatureWise',  
-    version='1.0.1',  
+    version='1.0.2',  
     description='A no-code solution for performing data transformations like imputation, encoding, scaling, and feature creation, with an intuitive interface for interactive DataFrame manipulation and easy CSV export.',  
     long_description=open('README.md').read(),  
     long_description_content_type='text/markdown', 
