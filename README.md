@@ -4,6 +4,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE.md)
 
 FeatureWise is a Python package for feature engineering that provides a set of tools for data transformation, imputation, encoding, scaling, and feature creation. This package comes with an interactive Streamlit interface that allows users to easily apply these transformations to their datasets.
+<iframe width="560" height="315" src="https://www.youtube.com/embed/SM4Q7kecGjM" frameborder="0" allowfullscreen></iframe>
 
 ## Features
 
